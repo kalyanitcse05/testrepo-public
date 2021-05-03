@@ -1,0 +1,314 @@
+I cleared CKA  exam today at the second time..
+Let me share my comments as other guys did.
+I took an first exam in Dec.26 and failed,,it's so close to 66% but failed.
+The reasons I got failed on the first exam are
+ -  failed to control my time per question accordingly,,I spent too much time on one question
+ -  I couldn't even touch the 4questions due to lack of time.
+ -  not familar with the environmental switching,,ex: I answered at another cluster,back to correct context and repeat again.
+ -  copy/paste indentation are not working correctly in the exam environment
+    (In my own environment, copy/paste indentation is always fine.)
+ -  confused to understand question correctly..
+ -  not use alias enough.
+ -  not structured bookmark.(time taken to get to the right page itself, it took around 4~5seconds,)
+During the preparation on the 2nd exam,
+I created my own environment on my labtop(64GB RAM),
+I've done many practices again & again to reduce the time to solve
+Like other guys said,, practice,practice,practice is the best tip,
+Using snapshot/recovery on vmware workstation was very helpful, I could repeat same question again&again until I got familar and enough.
+practice&practice made it to shorten the time to solve the same question dramatically. (eg: netpol question on Mock or github was 25->20->15->8->4~6min)
+Some tips I think it's useful for exam are ;
+- Absolutely, Mumshad Mannambeth's CKA course - I listened more than 3times fully, further I selectively listen the chapter
+  again&again where I feel difficult until I fully understand.
+  Just before 2nd exam, I could feel comfortable at the whole chapter, including that "WAS" difficult to me.
+- Mock exams and Lighting labs - I played with more than 5 times, so I could shorten the time more and more.
+- Surely, it's a must https://github.com/ahmetb/kubernetes-network-policy-recipes
+- I've read all messages in this slack room, and reproduced it in my own environment, and tried to solve it.
+- built my own environment to play with.
+- contol time per question during the exam strategically.(At the beginning I focus on easy one with high score)
+- used imperative command and alias as much as possible, surely this me save time.
+- using alphabetical-order-bookmark was very efficient and get to the right page in seconds, and remove other non-critical bookmark to me,,too many bookmarks can cause time-consuming to search page^^
+- I used tmux as needed.(but it's not must)
+I've spent almost 12hours a day for a month as I'm on Sabbath month break for 2months. ^^
+Specially I really appreciate Tej whenever answered my question and also members who answered my questions..
+If there isn't this channel,,I couldn't make it possible.
+---------
+Hello All, I would like to share that I have passed my CKA exam with 83% on my second attempt.  I failed on my first attempt with 64% as I have panicked a lot as my laptop camera was causing a lot of trouble, I lost my cool and ran out of time. But in my second attempt I was way faster in answering questions and had a lot of time to review my answers.
+Moral of the story is that if you fail for the first time don't worry,  you will pass the second attempt with flying colours. Because you will be become even more stronger and confident in concepts and faster in answering the question as you practice more and more.
+Tips:
+Make use of the auto-completion, it helps to avoid typo errors.
+Practice your bookmarks well which make easier for you to find the exact link during exam.
+Do refer to the network policies in as per the github link https://github.com/ahmetb as network policy question are tricky and need more practice.
+
+Tips:
+Run through all the labs a 2nd time before taking the exam.
+Run the Vagrant cluster (https://github.com/kodekloudhub/certified-kubernetes-administrator-course) locally on your laptop & practice the etcd backup/restore and Cluster upgrades
+During the exam, read the question carefully and make sure you’re on the right cluster (kubectl config get-contexts). And when you’re done w/ each question, try and verify it. You’ve got more time than you think!
+
+A question on etcd.
+To take the back up we have to provide the 3 certs which can be obtained
+ETCDCTL_API=3 etcdctl --cacert= --cert= --key= --endpoints $ENDPOINT \
+snapshot save snapshotdb ./backup.db
+The endpoint is always the listener url but you get two urls.
+--listen-client-urls=https://127.0.0.1:2379,https://172.17.0.16:2379
+Which one do we use?
+Will the exam ask with more than one etcd?
+4 replies
+
+I usually use the interface one and not the localhost host. That would help me in case there are nodes in cluster mode that need to access the etcd remotely and not just locally.
+
+If you're restoring etcd from a master node, you can use the localhost
+https://127.0.0.1:2379
+
+MAyman  7 hours ago
+But from a worker node, you need to use the master IP not localhost.
+
+Also check this gif about etcd backup and restore:
+
+
+source <(kubectl completion bash)
+echo "source <(kubectl completion bash)" >> ~/.bashrc
+alias k=kubectl
+complete -F __start_kubectl k
+alias k=kubectl
+alias kgp="k get pod -o wide"
+alias kgs="k get svc -o wide"
+alias kgd="k get deploy -o wide"
+alias kd="k describe"
+alias ke="k edit"
+alias kg="k get"
+export do="--dry-run=client -o yaml"
+echo -e "syntax on \n set ts=2 sts=2 et nu" >> ~/.vimrc
+
+.vimrc
+syntax on
+set paste nu et ts=2 sw=2 nowrap
+echo -e "syntax on \n set ts=2 sts=2 et nu" > ~/.vimrc
+
+------
+alias k=kubectl
+alias kgp='k get po'
+alias kgpo='k get po -o wide'
+alias kgps='k get po --show-labels'
+alias kdp='k delete po --grace-period=0 --force'
+alias kaf='k apply -f'
+alias kdf='k delete -f'
+---
+alias kcc="kubectl config current-context"
+
+k run busybox --image=busybox:1.28 --rm -it --restart=Never -- nslookup payroll-service
+--worked
+
+kubectl run test-pod --image=busybox:1.28 --rm -it -- nslookup nginx-resolver-service  --restart=Never
+
+k run busybox --image=busybox:1.28 --restart=Never --command sleep 1000 --dry-run=client -o yaml
+
+k run busybox-test --image=busybox:1.28 --rm -it  --restart=Never -- sh
+
+kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
+
+---
+# Note: All examples have aliased kubectl to k --> alias k=kubectl
+# Create a NGINX pod
+k run nginx --image=nginx --restart=Never
+
+# Create a NGINX deployment with 3 replicas
+k run nginx --image=nginx --replicas=3
+
+# Create a Job based on the busybox image. Execute the command "sleep 4800"
+k run bb-job --image=busybox --restart=OnFailure -- /bin/sh -c "sleep 4800"
+
+# Create a CronJob based on the busybox image. Write the date to stdout every minute.
+k run bb-cj --image=busybox --restart=OnFailure --schedule="*/1 * * * *" -- date
+--
+
+command: [“sh”,"-c",“sleep 4800”]
+command: ["/bin/sh","-c",“sleep 4800”]
+command: [“sleep”,“4800”]
+command: [“sh”] args: ["-c",“sleep 4800”]
+args: [“sh”,"-c",“sleep 4800”]
+
+------
+k cluster-info
+kubectl get componentstatuses     ## deprecated
+kubectl explain deployment --recursive
+kubectl explain deployment.spec.strategy
+
+arp node01   ##MAC address assigned to node01
+ip route show default   ## default route , gateway ip
+netstat -nplt  ###What is the port the kube-scheduler is listening on in the master node?
+
+-----
+kubeadm way!! But you should know how to check the cluster setup.
+In a hardway you can check the controlplane components service.
+$ systemctl status kube-apiserver
+In a kubeadm way, components deployed as static pods.
+$ kubectl get pods -n kube-system
+
+---
+kubectl run --generator=run-pod/v1 web --image=nginx --labels app=web --expose --port 80
+Run a temporary Pod and make a request to web Service:
+
+$ kubectl run --generator=run-pod/v1 --rm -i -t --image=alpine test-$RANDOM -- sh
+/ # wget -qO- http://web
+<!DOCTYPE html>
+<html>
+<head>
+----
+
+For those who want to clear CKA exam in their first attempt, I
+would strongly recommend to deploy a kubernetes cluster on prem (may be on your
+laptop or vmware) and access the cluster from a separate base-node. This will
+act as your student node, play with kubectl config context to practice the CKA
+exam environment. SSH to your cluster nodes from your base-node and trouble
+shoot and come back to your base-node. Practice network policies and ingress
+rules along with mock exams. You are good to go. I wish you all the best and “Don’t
+worry, be happy”
+
+
+Hi All, Happy to announce that i have cleared my CKA Exam on 2nd attempt, First attempt i made a mistake in time management and bit panic. I should really thank @Mumshad Mannambeth @Tej_Singh_Rana and the whole slack community(lot of people here) for the discussion i had and answers i received. i never felt i was preparing alone, bcas a exam like cka needs resource knowledge to crack it. Its impossible without the content from @Mumshad Mannambeth team and this #certified-kub-admin channel. As many of them said here they have covered enough paths and resources on how to get prepared outside of the course. I will just add some quick links from them. Also follow some notes from @runlevl4 @OE
+https://levelup.gitconnected.com/kubernetes-cka-example-questions-practical-challenge-86318d85b4d
+https://medium.com/@imarunrk/certified-kubernetes-administrator-cka-tips-and-tricks-part-4-17407899ef1a
+https://github.com/ahmetb/kubernetes-network-policy-recipes
+https://github.com/alijahnas/CKA-practice-exercises
+
+
+.SideCar -- it is here.. follow   .. section 5-  --110. Practice Test - Multi Container PODs
+
+
+
+Tej_Singh_Rana  4 days ago
+Hello, @Norrin Radd
+It's explained in the multi container pods lecture (In the Udemy lecture number 109). If you wanna know more please read from below resources:
+https://www.magalix.com/blog/the-sidecar-pattern
+https://kubernetes.io/docs/concepts/cluster-administration/logging/
+https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/ (edited) 
+
+Make use of the auto-completion, it helps to avoid typo errors.
+Practice your bookmarks well which make easier for you to find the exact link during exam.
+Do refer to the network policies in as per the github link https://github.com/ahmetb as network policy question are tricky and need more practice.
+
+
+- `kubeadm version`
+- `apt install kubeadm=v1.18.0`
+- `kubeadm upgrade apply v1.18.0`
+- `kubectl version --short` :
+
+Only a single terminal console is available during the exam. Terminal multiplexers such as GNU Screen and tmux can be used to create virtual consoles.
+
+iptables -nvL -t nat
+
+
+What is the network interface configured for cluster connectivity on the master node?
+
+
+node-to-node communication
+arp node01
+What is the IP address of the Default Gateway?
+ip route show default
+What is the port the kube-scheduler is listening on in the master node?
+netstat -nplt
+Notice that ETCD is listening on two ports. Which of these have more client connections established?
+netstat -anp | grep etcd
+
+ls /etc/cni/net.d/
+10-weave.conflist
+
+Practice test service networking  -- ps -aux | grep kube  #returns nothing
+
+game of pods : https://www.youtube.com/watch?v=rWkR0ldRsig
+
+service --status-all
+kubectl config get-contexts
+kubectl config current-context
+
+Yes, the course material is enough. practice all the labs at least thrice.  Refer below links for more details:
+For network policy -https://github.com/ahmetb/kubernetes-network-policy-recipes
+CKA trips & tricks: Refer all parts
+https://medium.com/faun/certified-kubernetes-administrator-cka-tips-and-tricks-part-1-2e98e9b31de4
+Practice training - https://github.com/StenlyTU/K8s-training-official
+ahmetb/kubernetes-network-policy-recipes
+
+<https://github.com/ahmetb/kubernetes-network-policy-recipes|ahmetb/kubernetes-network-policy-recipes>ahmetb/kubernetes-network-policy-recipes | Jul 29th, 2017 | Added by GitHub
+MediumMedium
+Certified Kubernetes Administrator (CKA) — Tips and Tricks — Part 1
+Certified Kubernetes Administrator is a challenging exam by CNCF. Unlike many other certifications, it’s a practical lab. It took two…
+Reading time
+4 min read
+May 15th, 2020 (69 kB)
+https://miro.medium.com/max/1024/1*w6VcAH_wck551NQSSEtRNQ.jpeg
+
+
+Resources allowed during exam:
+Candidates may use their Chrome or Chromium browser to open one additional tab in order to access
+assets at:
+● https://kubernetes.io/docs/ and its subdomains. This includes all available language translations
+of this page (e.g. https://kubernetes.io/zh/docs/)
+● https://github.com/kubernetes/ and its subdomains
+● https://kubernetes.io/blog/
+No other tabs may be opened and no other sites may be navigated to.
+The allowed sites above may contain links that point to external sites. It is the responsibility of the
+candidate not to click on any links that cause them to navigate to a domain that is not allowed.
+One more thing I would like to add https://discuss.kubernetes.io/ site not allowed during the exam. (edited) 
+
+vagrant
+ I use this
+https://github.com/LocusInnovations/k8s-vagrant-virtualbox.git
+
+what is this in netpol
+ - ports:
+    - port: 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP
+ ----
+ zen@Zenifers-MBP ~ % k expose deploy busybox-demo --port=80
+service/busybox-demo exposed
+zen@Zenifers-MBP ~ % k get svc -o wide
+NAME           TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)        AGE    SELECTOR
+busybox-demo   ClusterIP   10.2.0.96    <none>        80/TCP         8s     app=busybox-demo
+zen@Zenifers-MBP ~ % k run  busybox-client-pod --image=busybox -it --rm --restart=Never -- wget -O- 10.2.0.96:80
+
+
+Query:
+Create a service account in the "web" namespace called "webautomation"
+Create a ClusterRole called "pod-reader" that has "get, watch, and list" access to all Pods.
+Bind the ClusterRole to the Service Account to Only Read Pods in the web Namespace
+Bind the ClusterRole to the "webautomation" service account so that it can read all Pods, but only in the web namespace.
+My Solution:
+k create ns web
+k create sa webautomation -n web
+k create clusterrole pod-reader --resource=pods --verb=get,watch,list
+k create rolebinding role-binding --clusterrole=pod-reader --serviceaccount=web:webautomation -n web
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: netshoot
+spec:
+  containers:
+  - name: netshoot
+    image: nicolaka/netshoot
+    command: ['sh', '-c', 'while true; do sleep 5; done']
+
+kubectl config --kubeconfig=/root/my-kube-config use-context research
+JSONPath : how to exclude tainted nodes from get nodes
+list not ready nodes
+list ready nodes
+
+
+are network policies statefull? (edited) 
+4 replies
+OE  13 days ago
+You can easily verify this yourself. Just make an ingress rule and then connect to the port. Also, block all egress rules. The outbound connection is automatically allowed because it is stateful. You could also SSH to the box and view the ip table rules that the network policy creates (edited) 
+You can clear the CKA exam no doubt, but to be frank that certification won't be of any value, when you get interviewed you will be asked questions on containers and not just kubernetes. I'm your organization you won't just run kubernetes you will be building dockerfiles as well, how do you suppose to achieve that? Also let's say you need to troubleshoot kubernetes networking, without any idea about overlay networks and other networking understanding the CNI networking would be eating food without a plate. 
+It's not supposed that you should know docker but you should have an understanding of containers and networking to be a kubernetes administrator.
+I got my CKAD certification today, thanks in no small part to @Mumshad Mannambeth's excellent course. I want to share a few tips that helped me in the exam:
+Before starting the exam, take a minute to setup kubectl completion, aliases, and vim/tmux. For vim I used set nu sw=2 ts=2 softtabstop=2 expandtab autoindent pastetoggle=<f5> and for tmux I used set -g mouse on.
+Read the questions carefully. Some questions specify the namespace right at the top and others specify it in the bottom. I had to go back and fix 2 questions because I did not pay attention to the namespaces.
+Bookmark often used documentation pages/anchors for objects that cannot be created through kubectl commands. You'll surely get a couple of questions related to PV/PVC or NetworkPolicies where these bookmarks will be handy.
+Practice all the different ways to mount configs and secrets to pods (through volumes, environment variables ( envFrom and picking specific keys)
+Practice the mock exams and lightning labs, but remember that after the first few attempts your speed increases a lot because you anticipate the questions.
+Some questions are tedious but are worth only 2%. Flag those and come back to them at the end.
+If you create objects through yaml files, name the yaml files with the question number. For example, 08-pv.yaml. This is easier than creating folders for each question, and will help you if you want to review your work at the end.
+If you are able to setup 2 monitors, you'll be allowed to move the documentation tab to one of the monitors. This really helped me a lot because I could view the question as well as the documentation simultaneously.
+Some questions are relatively straightforward whereas others have nuances. Some questions ask you to create objects from yaml files. For these, create the yaml file through kubectl commands, but don't forget to store the yaml in the correct paths specified in the question.
